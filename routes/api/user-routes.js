@@ -15,6 +15,7 @@ router.get("/:id", async (req, res) => {
     const user = await User.findById(req.params.id).populate("thoughts", "friends")
     res.json(user)
   } catch (error) {
+    console.error(error)
     res.sendStatus(500)
   }
 })
@@ -46,12 +47,30 @@ router.delete("/:id", async (req, res) => {
   }
 })
 
-router.post("/:userId/friends/:friendId", async(req, res)=> {
-  try{
-    
+router.post("/:userId/friends/:friendId", async (req, res) => {
+  try {
+    const changes = await User.findByIdAndUpdate(req.params.userId, { $addToSet: { friends: req.params.friendId } }, { new: true })
+    if (!changes) {
+      res.sendStatus(404)
+      return
+    }
+    res.json(changes)
   } catch (error) {
     res.sendStatus(500)
   }
 })
 
-modules.exports = router
+router.delete("/:userId/friends/:friendId", async (req, res) => {
+  try {
+    const changes = await User.findByIdAndUpdate(req.params.userId, { $pull: { friends: req.params.friendId } }, { new: true, runValidators: true })
+    if (!changes) {
+      res.sendStatus(404)
+      return
+    }
+    res.json(changes)
+  } catch (error) {
+    res.sendStatus(500)
+  }
+})
+
+module.exports = router
