@@ -1,4 +1,5 @@
 const router = require("express").Router()
+//const { getUserById } = require("../../controllers/user-controller")
 const { User } = require("../../Models")
 
 router.get("/", async (req, res) => {
@@ -12,13 +13,15 @@ router.get("/", async (req, res) => {
 
 router.get("/:id", async (req, res) => {
   try {
-    const user = await User.findById(req.params.id).populate("thoughts", "friends")
+    const user = await User.findById(req.params.id).populate("thoughts").populate("friends")
     res.json(user)
   } catch (error) {
     console.error(error)
     res.sendStatus(500)
   }
 })
+
+//router.get("/:id", getUserById)
 
 router.post("/", async (req, res) => {
   try {

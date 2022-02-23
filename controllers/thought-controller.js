@@ -1,6 +1,14 @@
 const { User, Thought } = require('../models');
 
 const thoughtController = {
+  getThoughts(req, res) {
+    try {
+      const allThoughts = await Thought.find({})
+      res.json(allThoughts)
+    } catch (error) {
+      res.sendStatus(500)
+    }
+  },
   // add thought to user 
   addThought({ params, body }, res) {
     console.log(params);

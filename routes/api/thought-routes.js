@@ -1,6 +1,6 @@
 const router = require("express").Router()
 const { Thought, User } = require("../../Models")
-//const { removeReaction } = require("../../controllers/thought-controller")
+//const {getThoughts} = require("../../controllers/thought-controller")
 
 
 router.get("/", async (req, res) => {
@@ -11,6 +11,10 @@ router.get("/", async (req, res) => {
     res.sendStatus(500)
   }
 })
+
+//router.get("/", getThoughts)
+
+
 
 router.get("/:id", async (req, res) => {
   try {
